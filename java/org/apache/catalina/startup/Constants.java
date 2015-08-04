@@ -42,6 +42,10 @@ public final class Constants {
             "org.apache.catalina.startup.ContextConfig.jarsToSkip";
     public static final String TLD_JARS_TO_SKIP =
             "org.apache.catalina.startup.TldConfig.jarsToSkip";
+    
+    public static final String PARALLEL_ANNOTATION_SCANNING_THREADS_KEY = "contextconfig.annotationscanning.threads";
+    public static final String PARALLEL_ANNOTATION_SCANNING_TIMEOUT_KEY = "contextconfig.annotationscanning.timeout";
+    public static final long DEFAULT_PARALLEL_ANNOTATION_SCANNING_TIMEOUT = 20000;
 
     /**
      * A dummy value used to suppress loading the default web.xml file.
