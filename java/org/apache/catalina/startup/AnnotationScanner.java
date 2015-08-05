@@ -25,7 +25,6 @@ import org.apache.catalina.deploy.FilterDef;
 import org.apache.catalina.deploy.FilterMap;
 import org.apache.catalina.deploy.ServletDef;
 import org.apache.catalina.deploy.WebXml;
-import org.apache.catalina.startup.ContextConfig.AnnotationScanningResult;
 import org.apache.catalina.startup.ContextConfig.JavaClassCacheEntry;
 import org.apache.catalina.util.Introspection;
 import org.apache.juli.logging.Log;
@@ -57,14 +56,50 @@ public class AnnotationScanner<T> implements Callable<T>  {
      */
     private static final Set<ServletContainerInitializer> EMPTY_SCI_SET = Collections.emptySet();
 	
-    private Map<ServletContainerInitializer, Set<Class<?>>> initializerClassMap;
-    private Map<Class<?>, Set<ServletContainerInitializer>> typeInitializerMap;
-    private Map<String,JavaClassCacheEntry> javaClassCache;
+    /**
+     * Map of ServletContainerInitializer to classes they expressed interest in.
+     */
+    protected Map<ServletContainerInitializer, Set<Class<?>>> initializerClassMap;
+    
+    /**
+     * Map of Types to ServletContainerInitializer that are interested in those
+     * types.
+     */
+    protected Map<Class<?>, Set<ServletContainerInitializer>> typeInitializerMap;
+    
+    /**
+     * Cache of JavaClass objects (byte code) by fully qualified class name.
+     * Only populated if it is necessary to scan the super types and interfaces
+     * as part of the processing for {@link HandlesTypes}.
+     */
+    protected Map<String,JavaClassCacheEntry> javaClassCache;
+    
+    /**
+     * Current fragment that is parsing
+     */
     private WebXml fragment;
-    private boolean handlesTypesOnly;
-    private boolean handlesTypesNonAnnotations;
-    private boolean handlesTypesAnnotations;
-    private Context context;
+    
+    /**
+     * Flag that indicates whether check handlesTypes or not.
+     */
+    protected boolean handlesTypesOnly;
+    
+    /**
+     * Flag that indicates if at least one {@link HandlesTypes} entry is present
+     * that represents a non-annotation.
+     */
+    protected boolean handlesTypesNonAnnotations;
+    
+    /**
+     * Flag that indicates if at least one {@link HandlesTypes} entry is present
+     * that represents an annotation.
+     */
+    protected boolean handlesTypesAnnotations;
+    
+    /**
+     * The Context we are associated with.
+     */
+    protected Context context;
     
 	public AnnotationScanner(
 			AnnotationScanningResult result,

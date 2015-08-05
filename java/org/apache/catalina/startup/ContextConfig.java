@@ -2102,25 +2102,6 @@ public class ContextConfig implements LifecycleListener {
         }
     }
     
-    protected class AnnotationScanningResult{
-    	Map<ServletContainerInitializer, Set<Class<?>>> taskInitializerClassMap = new LinkedHashMap<ServletContainerInitializer, Set<Class<?>>>();
-    	Map<String,JavaClassCacheEntry> taskJavaClasscache = new HashMap<String,JavaClassCacheEntry>();
-    	
-    	public AnnotationScanningResult(Map<ServletContainerInitializer, Set<Class<?>>> taskInitializerClassMap, Map<String,JavaClassCacheEntry> taskJavaClasscache){
-    		this.taskInitializerClassMap.putAll(taskInitializerClassMap);
-    		this.taskJavaClasscache.putAll(taskJavaClasscache);
-    	}
-
-		public Map<ServletContainerInitializer, Set<Class<?>>> getTaskInitializerClassMap() {
-			return taskInitializerClassMap;
-		}
-
-		public Map<String, JavaClassCacheEntry> getTaskJavaClasscache() {
-			return taskJavaClasscache;
-		}
-
-    }
-
     protected static class JavaClassCacheEntry {
         public final String superclassName;
 
