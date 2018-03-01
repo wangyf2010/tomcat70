@@ -966,6 +966,12 @@ public abstract class AbstractEndpoint<S> {
         this.trustManagerClassName = trustManagerClassName;
     }
 
+    private String keyManagerClassName = null;
+    public String getKeyManagerClassName() {return keyManagerClassName;}
+    public void setKeyManagerClassName(String keyManagerClassName) {
+        this.keyManagerClassName = keyManagerClassName;
+    }
+
     private String crlFile = null;
     public String getCrlFile() {return crlFile;}
     public void setCrlFile(String crlFile) {

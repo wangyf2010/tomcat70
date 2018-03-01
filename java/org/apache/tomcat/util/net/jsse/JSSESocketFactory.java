@@ -631,6 +631,19 @@ public class JSSESocketFactory implements ServerSocketFactory, SSLUtil {
 
         String keystorePass = getKeystorePassword();
 
+        String className = endpoint.getKeyManagerClassName();
+        if(className != null && className.length() > 0) {
+             ClassLoader classLoader = getClass().getClassLoader();
+             Class<?> clazz = classLoader.loadClass(className);
+             if(!(KeyManager.class.isAssignableFrom(clazz))){
+                throw new InstantiationException(sm.getString(
+                        "jsse.invalidKeyManagerClassName", className));
+             }
+             Object keyManagerObject = clazz.newInstance();
+             KeyManager keyManager = (KeyManager) keyManagerObject;
+             return new KeyManager[]{ keyManager };
+        }
+
         KeyStore ks = getKeystore(keystoreType, keystoreProvider, keystorePass);
         if (keyAlias != null && !ks.isKeyEntry(keyAlias)) {
             throw new IOException(
